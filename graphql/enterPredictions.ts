@@ -112,7 +112,7 @@ export default async function enterPredictions(
           },
         });
       }
-      await updatePredictionsInMatchSet(context, match.matchSet.id);
+      // await updatePredictionsInMatchSet(context, match.matchSet.id);
     }
   }
 
