@@ -1,7 +1,9 @@
 import { relationship, integer } from "@keystone-next/keystone/fields";
 import { list } from "@keystone-next/keystone";
 import { rules, isSignedIn } from "../access";
+import updatePredictionsInMatchSet from "../graphql/updatePredictionsInMatchSet";
 
+const graphql = String.raw;
 export const Prediction = list({
   access: {
     operation: {
@@ -20,5 +22,11 @@ export const Prediction = list({
     predictedTeam: relationship({ ref: "Team.prediction" }),
     tournament: relationship({ ref: "Tournament.prediction" }),
     entry: relationship({ ref: "Entry.prediction" }),
+  },
+  hooks: {
+    afterOperation: async ({ context, item }) => {
+      const matchSetId = item.matchSetId;
+      await updatePredictionsInMatchSet(context, matchSetId);
+    },
   },
 });
